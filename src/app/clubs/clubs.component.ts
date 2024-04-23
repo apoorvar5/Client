@@ -1,19 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Player } from './player';
-import { environment } from '../../environments/environment.development';
 import { RouterLink } from '@angular/router';
-
+import { environment } from '../../environments/environment.development';
+import { Club } from './club';
 
 @Component({
-  selector: 'app-players',
+  selector: 'app-clubs',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './players.component.html',
-  styleUrl: './players.component.scss'
+  templateUrl: './clubs.component.html',
+  styleUrl: './clubs.component.scss'
 })
-export class PlayersComponent {
-  public players: Player[] = [];
+export class ClubsComponent {
+  public clubs: Club[] = [];
 
   constructor(private http: HttpClient){}
 
@@ -22,9 +21,9 @@ export class PlayersComponent {
       }
       
       getCountries() {
-        this.http.get<Player[]>(environment.baseUrl + 'api/Players').subscribe(
+        this.http.get<Club[]>(environment.baseUrl + 'api/Clubs').subscribe(
           {
-            next: result => this.players = result,
+            next: result => this.clubs = result,
             error: error => console.log(error)
           }
         );

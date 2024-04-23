@@ -1,0 +1,29 @@
+<table mat-table [dataSource]="playerClubs" 
+    class="mat-elevation-z8">
+    <!-- Id Column -->
+    <ng-container matColumnDef="clubId">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let f">{{f.club.clubId}}</td>
+    </ng-container>
+    
+    <!-- City name Column -->
+    <ng-container matColumnDef="clubName">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let f">{{f.club.clubName}}</td>
+      </ng-container>
+
+      <!-- Lat Column -->
+    <ng-container matColumnDef="clubLeague">
+        <th mat-header-cell *matHeaderCellDef>League</th>
+        <td mat-cell *matCellDef="let f">{{f.club.clubLeague}}</td>
+      </ng-container>
+
+      <!-- Long Column -->
+    <ng-container matColumnDef="clubCountry">
+        <th mat-header-cell *matHeaderCellDef>Country</th>
+        <td mat-cell *matCellDef="let f">{{f.club.clubCountry}}</td>
+      </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> 
+</table>

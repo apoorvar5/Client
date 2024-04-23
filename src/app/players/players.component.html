@@ -1,1 +1,25 @@
-<p>players works!</p>
+<h1>Players</h1>
+<table class="table table-striped">
+    <thead>
+        <tr> 
+            <th>Id</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Nationality</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (player of players; track $index) {
+            <tr>
+                <td>
+                    <a [routerLink] ="['/playerclubs', player.playerId]">
+                        {{player.playerId}}
+                    </a>
+                </td>
+                <td>{{player.playerName}}</td>
+                <td>{{player.playerPos}}</td>
+                <td>{{player.playerNationality}}</td>
+            </tr>
+        }
+    </tbody>
+</table>

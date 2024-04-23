@@ -1,0 +1,25 @@
+<h1>Clubs</h1>
+<table class="table table-striped">
+    <thead>
+        <tr> 
+            <th>Id</th>
+            <th>Name</th>
+            <th>League</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (club of clubs; track $index) {
+            <tr>
+                <td>
+                    <a [routerLink] ="['/clubplayers', club.clubId]">
+                        {{club.clubId}}
+                    </a>
+                </td>
+                <td>{{club.clubName}}</td>
+                <td>{{club.clubLeague}}</td>
+                <td>{{club.clubCountry}}</td>
+            </tr>
+        }
+    </tbody>
+</table>
