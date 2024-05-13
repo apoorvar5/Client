@@ -1,45 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from './auth.service';
-import { LoginRequest } from './login-request';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    RouterLink
-  ],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit{
-  constructor(private authService : AuthService, private router : Router){
+export class LoginComponent {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router : Router, private authService: AuthService){
 
   }
-  ngOnInit(): void {
-    this.form = new FormGroup({
-      userName: new FormControl(""),
-      password: new FormControl("", Validators.required)
-    });
+
+  form = this.fb.nonNullable.group({
+    email : ['', Validators.required],
+    password: ['', Validators.required],
+  });
+  errorMessage: string | null = null;
+
+
+onSubmit(): void{
+  const rawForm = this.form.getRawValue()
+  this.authService.login(rawForm.email, rawForm.password).subscribe({
+    next: () =>{
+      this.router.navigate(['/']);
+  },
+  error: (error) => {
+    this.errorMessage = error.code;
   }
-  form!: UntypedFormGroup;
-  onSubmit(){
-    let loginRequest : LoginRequest = <LoginRequest>{
-      userName:this.form.controls["userName"].value,
-      password: this.form.controls["password"].value
-    };
-    this.authService.login(loginRequest).subscribe({
-      next: result => {
-        console.log(result.message);
-        this.router.navigate([])
-      },
-      error: error => console.log(error)
-    })
-  }
+});
+  console.log("login");
+}
+
+// loginWithGoogle(): void {
+//   this.authService.loginWithGoogle().subscribe({
+//     next: (user) => {
+//       // Handle successful Google login
+//       this.router.navigate(['/']);
+//     },
+//     error: (error) => {
+//       // Handle Google login error
+//       console.error('Google login error:', error);
+//     }
+//   });
+// }
+
 }

@@ -1,16 +1,22 @@
 <header>
-    <mat-toolbar color="primary">
-        <button mat-icon-button [routerLink]="['/']">
-          <mat-icon>home</mat-icon>
-        </button>
-  
-        <a mat-flat-button color="primary" [routerLink]="['/players']">Players</a>
-        <span class="separator"></span>
+  <mat-toolbar color="primary">
+    <button mat-icon-button [routerLink]="['/']">
+      <mat-icon>home</mat-icon>
+    </button>
 
-        <a mat-flat-button color="primary" [routerLink]="['/clubs']">Clubs</a>
-        <span class="separator"></span>
-        
-        <a mat-flat-button color="primary" [routerLink]="['/login']">Log-In</a>
-        
-    </mat-toolbar>
-  </header> 
+    <a mat-flat-button color="primary" [routerLink]="['/players']">Players</a>
+    <span class="separator"></span>
+
+    <a mat-flat-button color="primary" [routerLink]="['/clubs']">Clubs</a>
+    <span class="separator"></span>
+
+    @if (isLoggedIn) {
+      <a mat-flat-button color="primary"  (click)="logout()">Log-Out</a>  
+    }
+    @else {
+    <a mat-flat-button color="primary"  [routerLink]="['/login']">Log-In</a>  
+    }
+
+
+  </mat-toolbar>
+</header>

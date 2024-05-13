@@ -1,27 +1,75 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { LoginRequest } from './login-request';
-import { Observable, tap } from 'rxjs';
-import { LoginResult } from './login-result';
-import { environment } from '../../environments/environment.development';
+import { Injectable, signal } from "@angular/core";
+import { Auth, user } from "@angular/fire/auth";
+import { GoogleAuthProvider, User, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { BehaviorSubject, Observable, from, map } from "rxjs";
+import { UserInterface } from "../user.interface";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root"
 })
-export class AuthService {
-  public tokenKey : string="tokenKey";
-  constructor (protected http : HttpClient) { 
-  
-  }
-  login(item : LoginRequest) : Observable<LoginResult>{
-    let url = `${environment.baseUrl}api/Admin/Login`;
-    return this.http.post<LoginResult>(url, item).pipe(tap(loginResult => {
-      if(loginResult.success){
-        localStorage.setItem(this.tokenKey, loginResult.token);
+
+export class AuthService{
+
+    private _authStatus = new BehaviorSubject<boolean>(false);
+    public authStatus = this._authStatus.asObservable();
+
+    constructor(private firebaseAuth : Auth){
+    }
+
+    user$ = user(this.firebaseAuth);
+    currentUserSig = signal<UserInterface |undefined | null> (undefined)
+    
+    register(email: string, username: string, password: string) : Observable<void>{
+        const promise = createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+        .then(response => updateProfile(response.user, {displayName: username}))
+
+        return from(promise)
+    }
+
+    login(email: string, password: string) : Observable<void>{
+        const promise = signInWithEmailAndPassword(
+            this.firebaseAuth, email, password
+        ).then(async() => {
+            const currentUser = this.firebaseAuth.currentUser;
+            if(currentUser){
+                const token = await currentUser.getIdToken();
+                console.log("TOKEN IS : ///////////////////--------------"+ token);
+                localStorage.setItem("tokenKey", token);
+                this._setAuthStatus(true);
+            }
+            else{
+                throw new Error("User not found");
+            }
+        });
+        return from(promise);
+    }
+
+    private _setAuthStatus(isAuthenticated : boolean) : void {
+        this._authStatus.next(isAuthenticated);
+    }
+
+    init() : void {
+        if(this.isAuthenticated()){
+          this._setAuthStatus(true);
+        }
+    }
+
+    // loginWithGoogle(): Observable<User | null> {
+    //     const provider = new GoogleAuthProvider();
+    //     return from(signInWithPopup(this.firebaseAuth, provider))
+    //         .pipe(
+    //             map(userCredential => userCredential.user)
+    //         );
+    // }
+
+    logout(): Observable<void> {
+        const promise = signOut(this.firebaseAuth);
+        localStorage.removeItem('tokenKey');
+        this._setAuthStatus(false);
+        return from(promise);
+    }
+
+    isAuthenticated() : boolean {
+        return localStorage.getItem('tokenKey') !== null;
       }
-    }));
-  }
-  getToken() : string | null {
-    return localStorage.getItem(this.tokenKey)
-  }
 }
