@@ -1,4 +1,35 @@
 <h1>Players</h1>
+<button (click)="displayAddPlayerForm()">Add New Player</button>
+
+@if(showForm){
+    <div>
+    <h2>Add New Player</h2>
+    <form (ngSubmit)="addNewPlayer()" enctype="multipart/form-data">
+    <label for="playerName">Player Name:</label>
+    <input type="text" id="playerName" name="playerName" [(ngModel)]="newPlayer.playerName" required>
+    <br>
+
+    <label for="playerPos">Player Position:</label>
+    <input type="text" id="playerPos" name="playerPos" [(ngModel)]="newPlayer.playerPos" required>
+    <br>
+
+    <label for="playerNationality">Player Nationality</label>
+    <input type="text" id="playerNationality" name="playerNationality" [(ngModel)]="newPlayer.playerNationality" required>
+    <br>
+    
+
+    @if(showIncompleteFieldsError){
+        <div>
+          <h2>Enter Data in all the fields!</h2>
+        </div>
+    }
+
+    <button type="submit">Submit</button>
+    <button (click)="cancelForm()">Cancel</button>
+  </form>
+    </div>
+    <br>
+}
 <table class="table table-striped">
     <thead>
         <tr> 

@@ -10,6 +10,8 @@
     <a mat-flat-button color="primary" [routerLink]="['/clubs']">Clubs</a>
     <span class="separator"></span>
 
+    <!-- <a mat-flat-button color="primary" [routerLink]="['/chat']">ChatWindow</a> -->
+    
     @if (isLoggedIn) {
       <a mat-flat-button color="primary"  (click)="logout()">Log-Out</a>  
     }

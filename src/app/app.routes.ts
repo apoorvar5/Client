@@ -7,6 +7,7 @@ import { PlayerClubsComponent } from './players/player-clubs.component';
 import { CallbackComponent } from './callback/callback.component';
 import { LoginComponent } from './auth/login.component';
 import { RegisterComponent } from './auth/register.component';
+import { ChatComponent } from './chat/chat.component';
 
 export const routes: Routes = [
     {path : '', component : HelloComponent, pathMatch : 'full'},
@@ -17,4 +18,5 @@ export const routes: Routes = [
     {path: 'playerclubs/:id', component: PlayerClubsComponent},
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
+    {path : 'chat', component : ChatComponent},
 ];

@@ -1,5 +1,7 @@
 export const environment = {
-    baseUrl : "http://localhost:5114/",
+    // baseUrl : "http://localhost:5114/",
+    baseUrl : "http://ec2-54-160-157-43.compute-1.amazonaws.com/",
+
     firebaseConfig : {
         apiKey: "AIzaSyCS9gPAlAXGuxX9NpGCoqj25JJ56Stno0E",
         authDomain: "my-angular-app-f7e34.firebaseapp.com",

@@ -1,3 +1,34 @@
+<button (click)="displayAddClubForm()">Add New Club</button>
+
+@if(showForm){
+    <div>
+    <h2>Add New Club</h2>
+    <form (ngSubmit)="addNewClub()" enctype="multipart/form-data">
+    <label for="clubName">Club Name:</label>
+    <input type="text" id="clubName" name="clubName" [(ngModel)]="newClub.clubName" required>
+    <br>
+
+    <label for="clubLeague">Club League:</label>
+    <input type="text" id="clubLeague" name="clubLeague" [(ngModel)]="newClub.clubLeague" required>
+    <br>
+
+    <label for="clubCountry">Club Country:</label>
+    <input type="text" id="clubCountry" name="clubCountry" [(ngModel)]="newClub.clubCountry" required>
+    <br>
+    
+
+    @if(showIncompleteFieldsError){
+        <div>
+          <h2>Enter Data in all the fields! </h2>
+        </div>
+      }
+
+    <button type="submit">Submit</button>
+    <button (click)="cancelForm()">Cancel</button>
+  </form>
+    </div>
+    <br>
+}
 <table mat-table [dataSource]="playerClubs" 
     class="mat-elevation-z8">
     <!-- Id Column -->
